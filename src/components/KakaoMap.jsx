@@ -1,56 +1,83 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
+function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
+  const mapRef = useRef(null)
+  const mapInstance = useRef(null) // 기존 지도 객체 저장
+  const markers = useRef([]) // 마커 저장
+  const [allPlaces, setAllPlaces] = useState([]) // 전체 검색 결과 저장
 
-function KakaoMap ({addr='나리로 38' ,pinName = '핀네임'}) {
+  useEffect(() => {
+    if (!mapRef.current) return
+    const { kakao } = window
 
-  const mapRef = useRef()
-
-  useEffect(()=>{
-    const container = mapRef.current
-    // INFO : 카카오 맵 사용
-    const { kakao } = window 
-    
-    const options = {
-        center: new kakao.maps.LatLng(0,0), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
+    if (!mapInstance.current) {
+      mapInstance.current = new kakao.maps.Map(mapRef.current, {
+        center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 중심 = 서울시청
+        level: 7, // 기본 확대 레벨
+      })
     }
-    const map = new kakao.maps.Map(container, options)
 
-    const geocoder = new kakao.maps.services.Geocoder()
+    const map = mapInstance.current
+    const ps = new kakao.maps.services.Places()
+    let tempPlaces = [] // 여러 페이지의 데이터를 모을 배열
+    let currentPage = 1
 
-    // TODO : 주소로 좌표를 검색
-    geocoder.addressSearch(addr, function(result, status) {
+    const searchPlaces = () => {
+      ps.keywordSearch(addr, (data, status, pagination) => {
+        if (status === kakao.maps.services.Status.OK) {
+          tempPlaces = [...tempPlaces, ...data] // 현재 페이지 데이터 추가
 
-      // TODO : 정상적으로 검색이 완료된 경우 
-      if (status === kakao.maps.services.Status.OK) {
-        const coords = new kakao.maps.LatLng(result[0].y, result[0].x)
+          if (pagination.hasNextPage && currentPage < 3) { // 3페이지까지 가져오기
+            currentPage++
+            pagination.nextPage()
+          } else {
+            setAllPlaces(tempPlaces) // 최종 데이터 저장
+            updateMap(tempPlaces)
+          }
+        } else {
+          setAllPlaces([]) // 검색 결과 없을 때
+          console.log("검색 결과 없음")
+        }
+      }, { page: currentPage, size: 15 })
+    }
 
-        // INFO : 결과값으로 받은 위치를 마커로 표시
+    const updateMap = (places) => {
+      markers.current.forEach(marker => marker.setMap(null))
+      markers.current = []
+
+      const bounds = new kakao.maps.LatLngBounds()
+
+      places.forEach(place => {
+        const { place_name, x, y } = place
+        const coords = new kakao.maps.LatLng(y, x)
+
         const marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
+          map,
+          position: coords,
         })
+        markers.current.push(marker)
 
-        // INFO : 인포윈도우로 장소에 대한 설명을 표시
         const infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${pinName}</div>`
+          content: `<div style="width:200px;text-align:center;padding:6px 0;">${place_name || pinName}</div>`,
         })
-        infowindow.open(map, marker)
+        kakao.maps.event.addListener(marker, "click", () => {
+          infowindow.open(map, marker)
+        })
 
-        // INFO : 지도의 중심을 결과값으로 받은 위치로 이동
-        map.setCenter(coords)
-      } else {
-        // TODO : 주소 검색 실패
-        console.error("주소 검색 실패", status)
-      }
-    })
-  }, [addr, pinName])
+        bounds.extend(coords)
+      })
 
-    return(
-        <div ref={mapRef} className="map w-full h-screen border-2 border-gray-300"></div>
-    )
-    
+      map.setBounds(bounds)
+    }
+
+    searchPlaces()
+  }, [addr])
+
+  useEffect(() => {
+    setPlaces(allPlaces) // 사이드바에 결과 전달
+  }, [allPlaces])
+
+  return <div ref={mapRef} className="map w-full h-screen border-2 border-gray-300"></div>
 }
 
 export default KakaoMap
-

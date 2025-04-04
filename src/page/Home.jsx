@@ -1,15 +1,17 @@
-import SearchBar from "../components/SearchBar";
-import KakaoMap from "../components/KakaoMap";
+import { useState } from "react"
+import KakaoMap from "../components/KakaoMap"
+import SideBar from "../components/SideBar/SideBar"
 
-export default function Home() {
+const Home = () => {
+  const [addr, setAddr] = useState("세종특별자치시 나리로 38")
+  const [places, setPlaces] = useState([]) // 검색 결과 저장
 
   return (
-    <div className="min-h-scree flex flex-col items-center p-6">
-      <h1>홈화면</h1>
-      <SearchBar placeholder="검색어 입력" autoFocus={true}/>
-      <div className="fixed top-0 left-0 right-0 bottom-0 z-[-1]">
-        <KakaoMap />
-      </div>
+    <div className="min-h-screen flex">
+      <SideBar setAddr={setAddr} places={places} />
+      <KakaoMap addr={addr} setPlaces={setPlaces} />
     </div>
   )
 }
+
+export default Home
