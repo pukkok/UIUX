@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  base: '/wooparoopa/', // 👈 여기 중요한 포인트!
   plugins: [
     react(),
     VitePWA({
@@ -10,4 +11,4 @@ export default defineConfig({
       manifest: "./public/manifest.json",
     }),
   ],
-});
+})
