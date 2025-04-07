@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://pukkok.github.io/wooparoopa/",
+  "homepage": "https://pukkok.github.io/uiux/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
