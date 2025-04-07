@@ -8,7 +8,22 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      manifest: "./public/manifest.json",
-    }),
+      includeAssets: ['favicon.ico'], // 이건 아이콘 등록용
+      manifest: {
+        name: "Wooparoopa",
+        short_name: "Wooparoopa",
+        start_url: "/uiux/",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#ffffff",
+        icons: [
+          {
+            src: "/uiux/favicon.ico",
+            sizes: "64x64 32x32 24x24 16x16",
+            type: "image/x-icon"
+          }
+        ]
+      }
+    })
   ],
 })
