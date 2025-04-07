@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const HomeCard = ({icon="🚩", point="갈거야", pointList=[], handleCardClick=null}) => {
 
   return (
@@ -15,14 +17,19 @@ const HomeCard = ({icon="🚩", point="갈거야", pointList=[], handleCardClick
           {pointList?.totalCount || 0}개
         </p>
         {point === "갈거야" && 
-        <button className="ml-auto border-2 border-[#331008] p-[2px_4px] rounded-md cursor-pointer">맛집 찾기</button>}
+        <Link to={"/map"} className="ml-auto border-2 border-[#331008] p-[2px_4px] rounded-md cursor-pointer">맛집 찾기
+        </Link>}
+        {/* // <button className="ml-auto border-2 border-[#331008] p-[2px_4px] rounded-md cursor-pointer">맛집 찾기</button> */}
       </div>
 
       <div className="mt-4 flex items-center">
         {pointList.length > 0 ? 
-        <p>{pointList[0].place_name} 
-          <span>{pointList[0]?.place_addr}</span>
-        </p> : 
+        <div>
+          <p>{pointList[0]?.place_name || "장소 이름"}
+            <span>{pointList[0]?.place_addr || "주소"}</span>
+          </p>  
+          <p>{pointList[0]?.comment || "코멘트 위치"}</p>
+        </div> :
         <p>등록된 데이터가 없어요.</p>}
         <button className="ml-auto">➡️</button>
       </div>

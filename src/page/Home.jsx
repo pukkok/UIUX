@@ -13,8 +13,26 @@ const Home = () => {
     setActiveCard(index)
   }
 
+  const pointList = [
+    {
+      place_name: "장소 이름1",
+      place_addr: "주소 위치1",
+      comment: "코멘트 위치1"
+    },
+    {
+      place_name: "장소 이름2",
+      place_addr: "주소 위치2",
+      comment: "코멘트 위치2"
+    },
+    {
+      place_name: "장소 이름3",
+      place_addr: "주소 위치3",
+      comment: "코멘트 위치3"
+    }
+  ]
+
   return (
-    <div className="min-h-screen p-4 bg-[#fff8f4]">
+    <div className="h-fit p-4 bg-[#fff8f4]">
       <HomeTitleBox />
 
       <div className="
@@ -25,7 +43,7 @@ const Home = () => {
         <div className="
         w-full
         flex flex-col justify-center items-center 
-        relative bottom-30
+        absolute top-41 overflow-hidden
         ">
           {homeDatas.map((data, index) => {
             return (
@@ -34,7 +52,7 @@ const Home = () => {
                 key={index}
                 icon={data.icon}
                 point={data.point}
-                pointList={[]}
+                pointList={[pointList]}
               />
             )
           })}
