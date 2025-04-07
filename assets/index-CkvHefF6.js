@@ -69,4 +69,4 @@ Please change the parent <Route path="${Q}"> to <Route path="${Q==="/"?"*":`${Q}
         w-full\r
         flex flex-col justify-center items-center \r
         relative bottom-30\r
-        `,children:Iv.map((r,h)=>pt.jsx(Fv,{handleCardClick:()=>s(h),icon:r.icon,point:r.point,pointList:[]},h))})]})]})};function iy(){return pt.jsx(gv,{children:pt.jsx(Qd,{path:"/",element:pt.jsx(ny,{})})})}O0.createRoot(document.getElementById("root")).render(pt.jsx(Gv,{children:pt.jsx(iy,{})}));
+        `,children:Iv.map((r,h)=>pt.jsx(Fv,{handleCardClick:()=>s(h),icon:r.icon,point:r.point,pointList:[]},h))})]})]})};function iy(){return pt.jsx(gv,{children:pt.jsx(Qd,{path:"/",element:pt.jsx(ny,{})})})}O0.createRoot(document.getElementById("root")).render(pt.jsx(Gv,{basename:"/uiux",children:pt.jsx(iy,{})}));
