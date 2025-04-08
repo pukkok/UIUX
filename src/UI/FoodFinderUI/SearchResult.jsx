@@ -2,12 +2,11 @@ import { useRef, useState } from "react"
 import DragHandle from "./DragHandle"
 import SearchResultItem from "./SearchResultItem"
 
-const SearchResults = ({ places = [], setAddr }) => {
+const SearchResults = ({ places = [], setPlacePin }) => {
   const [sizeLevel, setSizeLevel] = useState(1) // 0: 작음, 1: 중간, 2: 큼
   const startY = useRef(null)
 
   const handleTouchStart = (e) => {
-    console.log('동작 시작')
     startY.current = e.touches[0].clientY
   }
 
@@ -49,7 +48,7 @@ const SearchResults = ({ places = [], setAddr }) => {
             <SearchResultItem
               key={place.id}
               place={place}
-              onClick={() => setAddr(place.place_name)}
+              onClick={() => setPlacePin(place.place_name)}
             />
           ))}
       </div>

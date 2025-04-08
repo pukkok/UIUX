@@ -5,14 +5,15 @@ import SearchResults from "../UI/FoodFinderUI/SearchResult"
 
 const FoodFinder = () => {
   
-  const [addr, setAddr] = useState("나성동")
+  const [keyword, setKeword] = useState("나성동")
   const [places, setPlaces] = useState([])
+  const [placePin, setPlacePin] = useState("")
 
   return (
     <div className="">
-      <MobileHeader setAddr={setAddr} />
-      <KakaoMap addr={addr} setPlaces={setPlaces}/>
-      <SearchResults places={places}/>
+      <MobileHeader setKeword={setKeword} />
+      <KakaoMap keword={keyword} setPlaces={setPlaces} activePlace={placePin} />
+      <SearchResults places={places} setPlacePin={setPlacePin} />
     </div>
   )
 

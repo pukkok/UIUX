@@ -1,12 +1,12 @@
 import { useRef } from "react"
 import SearchBar from "./SearchBar"
 
-const MobileHeader = ({setAddr}) => {
+const MobileHeader = ({setKeword}) => {
   const searchRef = useRef(null)
 
   const search = () => {
     if (searchRef.current?.value.trim()) {
-      setAddr(searchRef.current.value)
+      setKeword(searchRef.current.value)
     }
   }
 
