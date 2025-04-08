@@ -35,6 +35,7 @@ const createStatusMarker = (status = "default", scale = 1) => {
   ctx.beginPath()
   ctx.fillStyle = '#fff'
   ctx.arc(20, 20, 9, 0, Math.PI * 2)
+  ctx.fill()
   ctx.closePath()
 
   return canvas.toDataURL()
