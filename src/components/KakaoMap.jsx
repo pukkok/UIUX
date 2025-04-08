@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
+function KakaoMap({ keword = "나성동", pinName = "핀네임", setPlaces, activePlace = "" }) {
   const mapRef = useRef(null)
   const mapInstance = useRef(null) // 기존 지도 객체 저장
   const markers = useRef([]) // 마커 저장
@@ -23,7 +23,7 @@ function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
     let currentPage = 1
 
     const searchPlaces = () => {
-      ps.keywordSearch(addr, (data, status, pagination) => {
+      ps.keywordSearch(keword, (data, status, pagination) => {
         if (status === kakao.maps.services.Status.OK) {
           tempPlaces = [...tempPlaces, ...data] // 현재 페이지 데이터 추가
 
@@ -45,6 +45,17 @@ function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
       markers.current.forEach(marker => marker.setMap(null))
       markers.current = []
 
+      const activeMarkerImage = new kakao.maps.MarkerImage(
+        // fixme : active마크가 들어 갈 곳 이후에 기본, 성공, 실패, 보류로 나눠서 사용할 것
+        "https://yourdomain.com/active-marker.png",
+        new kakao.maps.Size(24, 24)
+      )
+      
+      const defaultMarkerImage = new kakao.maps.MarkerImage(
+        "https://i1.daumcdn.net/dmaps/apis/n_local_blit_04.png",
+        new kakao.maps.Size(24, 24)
+      )
+
       const bounds = new kakao.maps.LatLngBounds()
 
       places.forEach(place => {
@@ -54,7 +65,11 @@ function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
         const marker = new kakao.maps.Marker({
           map,
           position: coords,
+          image: (place_name === activePlace) ? activeMarkerImage : defaultMarkerImage
         })
+
+        
+
         markers.current.push(marker)
 
         const infowindow = new kakao.maps.InfoWindow({
@@ -64,6 +79,11 @@ function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
           infowindow.open(map, marker)
         })
 
+        if (place_name === activePlace) {
+          map.setCenter(coords)
+          map.setLevel(3) // 더 가까이
+        }
+
         bounds.extend(coords)
       })
 
@@ -71,7 +91,7 @@ function KakaoMap({ addr = "나성동", pinName = "핀네임", setPlaces }) {
     }
 
     searchPlaces()
-  }, [addr])
+  }, [keword])
 
   useEffect(() => {
     setPlaces(allPlaces) // 사이드바에 결과 전달
