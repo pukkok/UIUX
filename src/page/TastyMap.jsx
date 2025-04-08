@@ -1,5 +1,5 @@
 import { useState } from "react"
-import KakaoMap from "../components/KakaoMap"
+import KakaoMap from "../UI/TastyMapUI/KakaoMap"
 import MobileHeader from "../UI/TastyMapUI/MobileHeader"
 import SearchResults from "../UI/TastyMapUI/SearchResult"
 
