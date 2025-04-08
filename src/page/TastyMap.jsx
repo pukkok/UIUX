@@ -1,9 +1,9 @@
 import { useState } from "react"
 import KakaoMap from "../components/KakaoMap"
-import MobileHeader from "../UI/FoodFinderUI/MobileHeader"
-import SearchResults from "../UI/FoodFinderUI/SearchResult"
+import MobileHeader from "../UI/TastyMapUI/MobileHeader"
+import SearchResults from "../UI/TastyMapUI/SearchResult"
 
-const FoodFinder = () => {
+const TastyMap = () => {
   
   const [keyword, setKeword] = useState("나성동")
   const [places, setPlaces] = useState([])
@@ -19,4 +19,4 @@ const FoodFinder = () => {
 
 }
 
-export default FoodFinder
+export default TastyMap

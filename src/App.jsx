@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./page/Home";
-import FoodFinder from "./page/FoodFinder";
+import TastyMap from "./page/TastyMap";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />}></Route>
-      <Route path="/map" element={<FoodFinder />}></Route>
+      <Route path="/map" element={<TastyMap />}></Route>
     </Routes>
   )
 }
