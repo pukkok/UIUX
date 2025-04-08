@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
+import createStatusMarker from './createStatusMarker.util'
 
-function KakaoMap({ keword = "나성동", pinName = "핀네임", setPlaces, activePlace = "" }) {
+function KakaoMap({ keword = "나성동", setPlaces, activePlace = "" }) {
   const mapRef = useRef(null)
   const mapInstance = useRef(null) // 기존 지도 객체 저장
   const markers = useRef([]) // 마커 저장
@@ -45,6 +46,8 @@ function KakaoMap({ keword = "나성동", pinName = "핀네임", setPlaces, acti
       markers.current.forEach(marker => marker.setMap(null))
       markers.current = []
 
+      const defaultMarker = createStatusMarker()
+
       const activeMarkerImage = new kakao.maps.MarkerImage(
         // fixme : active마크가 들어 갈 곳 이후에 기본, 성공, 실패, 보류로 나눠서 사용할 것
         "https://yourdomain.com/active-marker.png",
@@ -52,7 +55,7 @@ function KakaoMap({ keword = "나성동", pinName = "핀네임", setPlaces, acti
       )
       
       const defaultMarkerImage = new kakao.maps.MarkerImage(
-        "https://i1.daumcdn.net/dmaps/apis/n_local_blit_04.png",
+        defaultMarker,
         new kakao.maps.Size(24, 24)
       )
 
@@ -68,16 +71,7 @@ function KakaoMap({ keword = "나성동", pinName = "핀네임", setPlaces, acti
           image: (place_name === activePlace) ? activeMarkerImage : defaultMarkerImage
         })
 
-        
-
         markers.current.push(marker)
-
-        const infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="width:200px;text-align:center;padding:6px 0;">${place_name || pinName}</div>`,
-        })
-        kakao.maps.event.addListener(marker, "click", () => {
-          infowindow.open(map, marker)
-        })
 
         if (place_name === activePlace) {
           map.setCenter(coords)
